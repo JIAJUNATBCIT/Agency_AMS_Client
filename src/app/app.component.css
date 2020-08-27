@@ -1,0 +1,59 @@
+.errorMsg {
+    color: red;
+    width: 600px;
+}
+
+.divider {
+    color:grey;
+    font-size: medium;
+}
+
+.textAreaDesc {
+    overflow-y : "hidden";
+    height : "8px";
+    resize: none;
+}
+
+.form-content
+{
+    padding: 3%;
+    border: 1px solid #ced4da;
+    margin-bottom: 2%;
+}
+
+.note
+{
+    text-align: center;
+    height: 70px;
+    background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+    color: #fff;
+    font-weight: bold;
+    line-height: 70px;
+}
+
+.form-control{
+    border-radius:1.5rem;
+}
+
+.btnSubmit
+{
+    border:none;
+    border-radius:1.5rem;
+    padding: 1%;
+    width: 20%;
+    cursor: pointer;
+    background: #0062cc;
+    color: #fff;
+    margin-right: 5%;
+}
+
+.btnCancel
+{
+    border:none;
+    border-radius:1.5rem;
+    padding: 1%;
+    width: 20%;
+    cursor: pointer;
+    background: #acababe0;
+    color: #fff;
+}

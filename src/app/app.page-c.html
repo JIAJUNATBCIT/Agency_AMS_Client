@@ -1,0 +1,71 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#">{{display_role}}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token == ''">Login <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Register" routerLinkActive="active" *ngIf="token == ''">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link active" routerLink="/User/Profile" routerLinkActive="active" *ngIf="token != ''">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/Employees" routerLinkActive="active" *ngIf="isManager">Employees</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Events/Booking" routerLinkActive="active" *ngIf="token != ''">Calendar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Ticket/MyTickets" routerLinkActive="active" *ngIf="token != ''">MyTickets</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/TicketCentre" routerLinkActive="active" *ngIf="isAdmin">Ticket Centre</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token != ''" (click)='logout()'>Logout ({{_username}})</a>
+    </li>
+</ul>
+<p-toast key="updateUser_success"></p-toast>
+<div class="form">
+    <div class="note">
+        <p><i class="pi pi-user-edit" style="font-size: 1.8rem; margin-right: 1%;"></i><span style="font-size:25px;">Profile</span></p>
+    </div>
+    <div class="form-content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div>Username:</div>
+                    <input id="username" type="text" class="form-control" [(ngModel)]="_username" disabled>
+                </div>
+                <div class="form-group">
+                    <div>First name:</div>
+                    <input id="first_name" type="text" class="form-control" [(ngModel)]="_first_name">
+                </div>
+                <div class="form-group">
+                    <div>Last name:</div>
+                    <input id="last_name" type="text" class="form-control" [(ngModel)]="_last_name">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div>Email:</div>
+                    <input id="email" type="text" class="form-control" [(ngModel)]="_email">
+                </div>
+                <div class="form-group">
+                    <div>Phone:</div>
+                    <input id="phone" type="text" class="form-control" [(ngModel)]="_phone">
+                </div>
+                <div class="form-group">
+                    <div>Office:</div>
+                    <p-dropdown [options]="_offices" name="_office" [(ngModel)]="_office"></p-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="align-items: center; justify-content: center; margin-top: 5%; margin-left: 5%;">
+            <input type="button" class="btnSubmit" value="Update" *ngIf="token != ''" (click) = "update()">
+        </div>
+    </div>
+</div>
+<label class="errorMsg">{{_errorMessage}}</label>

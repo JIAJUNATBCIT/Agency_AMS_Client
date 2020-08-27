@@ -1,0 +1,178 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#">{{display_role}}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token == ''">Login <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Register" routerLinkActive="active" *ngIf="token == ''">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/User/Profile" routerLinkActive="active" *ngIf="token != ''">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/Employees" routerLinkActive="active" *ngIf="isManager">Employees</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Events/Booking" routerLinkActive="active" *ngIf="token != ''">Calendar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link active" routerLink="/Ticket/MyTickets" routerLinkActive="active" *ngIf="token != ''">MyTickets</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/TicketCentre" routerLinkActive="active" *ngIf="isAdmin">Ticket Centre</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token != ''" (click)='logout()'>Logout ({{_username}})</a>
+    </li>
+</ul>
+<ng-template #createTicketModal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">{{title}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>
+                <label>Date:</label>&nbsp;
+                <input type="text" [(ngModel)]="_date" disabled/>
+            </p>
+            <p>
+                <label>Name:</label>&nbsp;
+                <input type="text" [(ngModel)]="_username" disabled/>
+            </p>
+            <p>
+                <label>Description:</label>&nbsp;
+                <textarea placeholder="Descript the issue here ..." [(ngModel)]="_description" (keydown.enter)="textAreaAdjust($event.target)">{{_description}}</textarea>
+            </p>
+            <p>
+                <label>Email:</label>&nbsp;
+                <input type="text" [(ngModel)]="_email" required/>
+            </p>
+            <p>
+                <label>Phone:</label>&nbsp;
+                <input type="text" [(ngModel)]="_phone" required/>
+            </p>
+            <p>
+                <label>Attachment:</label>&nbsp;
+                <p-fileUpload name="myfiles" url="{{fileupload_url}}" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*" maxFileSize="1000000">
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="downloadJson.length">
+                            <li *ngFor="let file of downloadJson"><a href='javascript:void(0)' (click)="download(file.filename)">{{file.fileDisplayName}} - {{file.filesize}} KBS</a></li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="createTicket(); modal.close('Close click')">Submit</button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+        </div>
+</ng-template>
+<ng-template #showTicketModal let-modal>
+    <div class="modal-header">
+        <p-toast key="uploaded"></p-toast>
+        <h4 class="modal-title">{{_selected_ticket.ticket_id}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>
+            <label>Created Date:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.date" disabled />
+        </p>
+        <p>
+            <label>User Name:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.username" disabled />
+        </p>
+        <p>
+            <label>Phone:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.phonenumber" />
+        </p>
+        <p>
+            <label>Email:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.email" />
+        </p>
+        <p>
+            <label>Description:</label>&nbsp;
+            <textarea placeholder="Descript the issue here ..." [(ngModel)]="_selected_ticket.description" (keydown.enter)="textAreaAdjust($event.target)">{{_description}}</textarea>
+        </p>
+        <p>
+            <label>Assigned To:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.assigned_name" disabled />
+        </p>
+        <p>
+            <label>Status:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.status" disabled />
+        </p>
+        <p>
+            <label>Admin Note:</label>&nbsp;
+            <input type="text" [(ngModel)]="_selected_ticket.admin_note" disabled />
+        </p>
+        <p>
+            <label>Attachment:</label>&nbsp;
+            <p-fileUpload name="myfiles" url="{{fileupload_url}}" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*" maxFileSize="1000000">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="_selected_ticket.downloadJson.length">
+                        <li *ngFor="let file of _selected_ticket.downloadJson"><a href='javascript:void(0)' (click)="download(file.filename)">{{file.fileDisplayName}} - {{file.filesize}} KBS</a></li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="updateTicket(); modal.close('Close click')">Update</button>
+        <button type="button" class="btn btn-secondary" (click)="delConfirm(); modal.close('Close click')">Delete</button>
+    </div>
+</ng-template>
+<p-toast key="updateTk_success"></p-toast>
+<p-toast position="center" key="del_tks" (onClose)="onReject()" [modal]="true" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+        <div style="text-align: center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+            <h3>{{message.summary}}</h3>
+            <p><b>Ticket ID: {{_selected_ticket.ticket_id}}</b></p>
+            <p>{{message.detail}}</p>
+        </div>
+        <div class="p-grid ui-fluid">
+            <div class="p-col-6">
+                <button type="button" pButton (click)="delTicket()" label="Yes" class="ui-button-success"></button>
+            </div>
+            <div class="p-col-6">
+                <button type="button" pButton (click)="onReject()" label="No" class="ui-button-secondary"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
+<div class="form">
+    <div class="note">
+        <p><i class="pi pi-ticket" style="font-size: 1.8rem; margin-right: 1%;"></i><span style="font-size:25px;">My Tickets</span></p>
+    </div>
+    <div class="form-content">
+        <p-table [columns]="cols" [value]="_tickets" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        selectionMode="single" [(selection)]="_selected_ticket" dataKey="ticket_id">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData" (click)="openTicketInfoModal(showTicketModal)">
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <div class="row" style="align-items: center; justify-content: center; margin-top: 5%; margin-left: 5%;">
+            <button class="btnSubmit" (click)="openCreateTicketModal(createTicketModal)" *ngIf="token != ''">Create Ticket</button>
+        </div>
+    </div>
+</div>
+<label class="errorMsg">{{_errorMessage}}</label>

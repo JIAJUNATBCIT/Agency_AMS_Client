@@ -1,0 +1,83 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#">{{display_role}}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token == ''">Login <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Register" routerLinkActive="active" *ngIf="token == ''">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/User/Profile" routerLinkActive="active" *ngIf="token != ''">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/Employees" routerLinkActive="active" *ngIf="isManager">Employees</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link active" routerLink="/Events/Booking" routerLinkActive="active" *ngIf="token != ''">Calendar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Ticket/MyTickets" routerLinkActive="active" *ngIf="token != ''">MyTickets</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/Admin/TicketCentre" routerLinkActive="active" *ngIf="isAdmin">Ticket Centre</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token != ''" (click)='logout()'>Logout ({{_username}})</a>
+    </li>
+</ul>
+<p-toast key="updateCar_success"></p-toast>
+<ng-template #createCarModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Register Car</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>
+            <label>Model:</label>&nbsp;
+            <input type="text" [(ngModel)]="_model"/>
+        </p>
+        <p>
+            <label>Make:</label>&nbsp;
+            <input type="text" [(ngModel)]="_make"/>
+        </p>
+        <p>
+            <label>Booked By:</label>&nbsp;
+            <input type="text" [(ngModel)]="_booked_user"/>
+        </p>
+        <p>
+            <label>Office:</label>&nbsp;
+            <p-dropdown [options]="_offices" name="_office" [(ngModel)]="_office"></p-dropdown>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="createCar(); modal.close('Close click')">Submit</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+</ng-template>
+<div class="form">
+    <div class="note">
+        <p><i class="pi pi-calendar" style="font-size: 1.8rem; margin-right: 1%;"></i><span style="font-size:25px;">Calendar</span></p>
+    </div>
+    <div class="form-content">
+        <div class="row">
+            <div class="col-md-12" style="margin-left: 16%;">
+                <div class="form-group">
+                    <p-calendar [(ngModel)]="_selected_schedule" [minDate]="today" [inline]="true" [numberOfMonths]="3" showButtonBar="true" selectionMode="multiple" [disabledDates]="_selected_schedule" [readonlyInput]="true"></p-calendar>
+                </div>
+                <div class="form-group" >
+                    <label>Check Schedule:</label>&nbsp;
+                    <p-dropdown [options]="_all_schedules" [(ngModel)]="_selected_car" (onChange)="getCarSchedule()"></p-dropdown>
+                    <button type="button" pButton label="Book" style="margin-left: 1%;" (click)="updateSchedule()"></button>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-primary mb-2 mr-2" (click)="openCreateCarModal(createCarModal)" *ngIf="token != ''">Register Car</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<label class="errorMsg">{{_errorMessage}}</label>

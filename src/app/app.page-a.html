@@ -1,0 +1,36 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="#">ALL</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link active" routerLink="/User/Login" routerLinkActive="active" *ngIf="token == ''">Login <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-item nav-link" routerLink="/User/Register" routerLinkActive="active" *ngIf="token == ''">Register</a>
+  </li>
+</ul>
+
+<div style="display:flex; align-items:center; justify-content:first baseline; height:100%; flex-direction:column">
+  <div style="margin-top: 8%; margin-bottom: 2%;">
+    <img src='../assets/logo.png'>
+  </div>
+  <p-panel header="Login"> 
+    <div  style="display:flex; align-items:center; justify-content:center; flex-direction:column">
+      <div class="ui-inputgroup">
+        <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span> 
+        <input type="text" pInputText placeholder="Username" [(ngModel)]='username'/>
+      </div>
+      <br>
+      <div class="ui-inputgroup">
+        <span class="ui-inputgroup-addon"><i class="pi pi-lock"></i></span> 
+        <input type="password" pPassword placeholder="Password" [(ngModel)]='password'/>
+      </div>
+      <br/>
+      <div class="ui-inputgroup" style="margin-bottom: 4%;">
+        <input type='button' class="btn btn-primary" value='Login' (click)='login()'/>&nbsp;&nbsp;
+        <input type='button' class="btn btn-secondary" value='SignUp' (click)='register()'/>
+      </div>
+    </div>
+  </p-panel>
+</div>
+

@@ -1,0 +1,59 @@
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="#">ALL</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link" routerLink="/User/Login" routerLinkActive="active" *ngIf="token == ''">Login <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-item nav-link active" routerLink="/User/Register" routerLinkActive="active" *ngIf="token == ''">Register</a>
+    </li>
+</ul>
+<div class="form">
+<div class="note">
+    <p><i class="pi pi-user-plus" style="font-size: 1.8rem; margin-right: 1%;"></i><span style="font-size:25px;">Register</span></p>
+</div>
+<div class="form-content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input id="username" type="text" class="form-control" [(ngModel)]="_username" placeholder="Your Username *">
+            </div>
+
+            <div class="form-group">
+                <input id="first_name" type="text" class="form-control" [(ngModel)]="_first_name" placeholder="Your first name *">
+            </div>
+            
+            <div class="form-group">
+                <input id="last_name" type="text" class="form-control" [(ngModel)]="_last_name" placeholder="Your last name *">
+            </div>
+            
+            <div class="form-group">
+                Office: <p-dropdown [options]="_offices" [(ngModel)]="_office"></p-dropdown>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input id="email" type="text" class="form-control" [(ngModel)]="_email" placeholder="Email *">
+            </div>
+
+            <div class="form-group">
+                <input id="phone" type="text" class="form-control" [(ngModel)]="_phone" placeholder="Phone Number">
+            </div>
+            
+            <div class="form-group">
+                <input id="password" type="password" class="form-control" [(ngModel)]="_password" placeholder="Your Password *">
+            </div>
+            
+            <div class="form-group">
+                <input id="password_confirm" type="password" class="form-control" [(ngModel)]="_password_confirm" placeholder="Confirm Password *">
+            </div>
+        </div>
+    </div>
+    <div class="row" style="align-items: center; justify-content: center; margin-top: 5%;">
+        <input type="button" class="btnSubmit" value="Submit" (click) ='register()'/>
+        <input type='button' class="btnCancel" value='Cancel' (click)='cancel()'/>
+    </div>
+</div>
+</div>
+<label class="errorMsg">{{_errorMessage}}</label>
